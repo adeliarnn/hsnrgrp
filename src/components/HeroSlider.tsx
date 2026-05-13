@@ -20,7 +20,32 @@ interface SliderImage {
 }
 
 export default function HeroSlider() {
-  const [sliders, setSliders] = useState<SliderImage[]>([]);
+  const [sliders, setSliders] = useState<SliderImage[]>([
+    {
+      _id: '1',
+      title: 'Hasnur Group',
+      description: 'Membangun masa depan berkelanjutan bersama inovasi dan integritas',
+      imageUrl: '/Desain Hasnur (1).png',
+      link: '/about',
+      isActive: true,
+    },
+    {
+      _id: '2',
+      title: 'Nilai-Nilai Inti',
+      description: 'Tujuh pilar yang membimbing setiap keputusan dan tindakan kami',
+      imageUrl: '/Desain Hasnur (2).png',
+      link: '/core-values',
+      isActive: true,
+    },
+    {
+      _id: '3',
+      title: '7 Strategic Business Units',
+      description: 'Ekosistem bisnis yang kuat dan berkelanjutan',
+      imageUrl: '/Desain Hasnur (3).png',
+      link: '/business/logistic',
+      isActive: true,
+    },
+  ]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,67 +54,37 @@ export default function HeroSlider() {
 
   const fetchSliders = async () => {
     try {
-      const res = await fetch('/api/content/slider');
+      const res = await fetch('/api/content/slider', { 
+        cache: 'no-store' 
+      });
+      
+      if (!res.ok) {
+        console.warn('Failed to fetch sliders, using default');
+        setLoading(false);
+        return;
+      }
+
       const data = await res.json();
       const activeSliders = Array.isArray(data)
         ? data.filter((s: SliderImage) => s.isActive).sort((a: SliderImage, b: SliderImage) => a.order - b.order)
         : [];
       
-      if (activeSliders.length === 0) {
-        // Default slider jika tidak ada data
-        setSliders([
-          {
-            _id: '1',
-            title: 'Hasnur Group',
-            description: 'Membangun masa depan berkelanjutan bersama inovasi dan integritas',
-            imageUrl: '/Desain Hasnur (1).png',
-            link: '/about',
-            isActive: true,
-          },
-          {
-            _id: '2',
-            title: 'Nilai-Nilai Inti',
-            description: 'Tujuh pilar yang membimbing setiap keputusan dan tindakan kami',
-            imageUrl: '/Desain Hasnur (2).png',
-            link: '/core-values',
-            isActive: true,
-          },
-          {
-            _id: '3',
-            title: '7 Strategic Business Units',
-            description: 'Ekosistem bisnis yang kuat dan berkelanjutan',
-            imageUrl: '/Desain Hasnur (3).png',
-            link: '/business/logistic',
-            isActive: true,
-          },
-        ]);
-      } else {
+      if (activeSliders.length > 0) {
         setSliders(activeSliders);
       }
+      setLoading(false);
     } catch (error) {
-      console.error('Error fetching sliders:', error);
-      // Fallback ke default slider
-      setSliders([
-        {
-          _id: '1',
-          title: 'Hasnur Group',
-          description: 'Membangun masa depan berkelanjutan bersama inovasi dan integritas',
-          imageUrl: '/Desain Hasnur (1).png',
-          link: '/about',
-          isActive: true,
-        },
-      ]);
-    } finally {
+      console.warn('Error fetching sliders:', error);
+      // Tetap gunakan default sliders
       setLoading(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+      <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
         <div className="text-white text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p>Loading...</p>
         </div>
       </div>
     );
@@ -124,7 +119,7 @@ export default function HeroSlider() {
         className="w-full h-full"
       >
         {sliders.map((slide, index) => (
-          <SwiperSlide key={slide._id}>
+          <SwiperSlide key={`${slide._id}-${index}`}>
             <div className="relative w-full h-full">
               {/* Image Background */}
               <div
