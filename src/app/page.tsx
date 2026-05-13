@@ -3,25 +3,18 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Navigation from '@/components/Navigation';
+import HeroSlider from '@/components/HeroSlider';
 import CoreValuesAnimation from '@/components/CoreValuesAnimation';
 import Footer from '@/components/Footer';
 
 export default function Home() {
-  const heroRef = useRef(null);
   const businessRef = useRef(null);
   
-  const { scrollYProgress: scrollYProgress1 } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end center'],
-  });
-
   const { scrollYProgress: scrollYProgress2 } = useScroll({
     target: businessRef,
     offset: ['start end', 'end start'],
   });
 
-  const heroY = useTransform(scrollYProgress1, [0, 1], [0, 100]);
-  const heroOpacity = useTransform(scrollYProgress1, [0, 1], [1, 0.5]);
   const businessScale = useTransform(scrollYProgress2, [0, 0.5, 1], [0.95, 1, 0.95]);
 
   const businesses = [
@@ -73,74 +66,8 @@ export default function Home() {
     <>
       <Navigation />
       
-      {/* Hero Section with Parallax */}
-      <section ref={heroRef} className="pt-32 pb-20 bg-gradient-to-br from-blue-600 to-purple-600 text-white relative overflow-hidden min-h-screen flex items-center">
-        {/* Animated Background Elements */}
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="absolute top-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl"
-        ></motion.div>
-        <motion.div
-          style={{ y: heroY }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400 opacity-5 rounded-full blur-3xl"
-        ></motion.div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <div className="mb-4">
-                <span className="inline-block bg-white bg-opacity-20 text-yellow-300 px-4 py-2 rounded-full text-sm font-semibold mb-4 drop-shadow-lg font-bold">
-                  🚀 Hasnur Group - Established 1966
-                </span>
-              </div>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                Membangun Masa Depan Berkelanjutan
-              </h1>
-              <p className="text-xl text-blue-100 mb-8">
-                Hasnur Group adalah grup usaha terkemuka dengan 7 divisi strategis yang berkontribusi pada pembangunan ekonomi nasional dan kesejahteraan masyarakat.
-              </p>
-              <div className="flex gap-4">
-                <motion.a
-                  href="/about"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-blue-50 transition inline-block"
-                >
-                  Tentang Kami
-                </motion.a>
-                <motion.a
-                  href="/contact"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-blue-600 transition inline-block"
-                >
-                  Hubungi Kami
-                </motion.a>
-              </div>
-            </motion.div>
-            <motion.div
-              className="hidden md:block"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <motion.div
-                animate={{ y: [0, 20, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
-                className="bg-white bg-opacity-10 rounded-lg p-8 backdrop-blur-sm"
-              >
-                <div className="bg-gradient-to-br from-yellow-300 to-red-400 rounded-lg h-96 flex items-center justify-center shadow-2xl">
-                  <span className="text-6xl">🏢</span>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Slider */}
+      <HeroSlider />
 
       {/* Core Values with Rotating Border */}
       <CoreValuesAnimation />
