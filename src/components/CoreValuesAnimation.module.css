@@ -1,0 +1,215 @@
+/* Main Container */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Center Static Content */
+.centerContent {
+  position: absolute;
+  width: 65%;
+  height: 65%;
+  z-index: 20;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.centerImage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.centerImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Rotating Border Container */
+.rotatingContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  animation: orbitBorder 30s linear infinite;
+  z-index: 15;
+}
+
+@keyframes orbitBorder {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotatingContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.3));
+  animation: counterRotate 30s linear infinite reverse;
+}
+
+@keyframes counterRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Optional: Pulse glow effect on rotating border */
+@keyframes borderPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(37, 99, 235, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(37, 99, 235, 0.6));
+  }
+}
+
+.rotatingContainer.hasPulse img {
+  animation: counterRotate 30s linear infinite reverse, borderPulse 4s ease-in-out infinite;
+}
+
+/* Legacy orbit values (if still needed) */
+.valueItem {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  transform: rotate(var(--rotation)) translateY(-175px) rotate(calc(-1 * var(--rotation)));
+}
+
+.valuePetal {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.valuePetal:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.valueText {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px;
+  line-height: 1.2;
+}
+
+/* Values Grid Below */
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.valueCard {
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid;
+  background: white;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.valueCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.valueCard h4 {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.valueCard p {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    max-width: 400px;
+  }
+
+  .centerContent {
+    width: 65%;
+    height: 65%;
+  }
+
+  .valueItem {
+    width: 70px;
+    height: 70px;
+    margin-left: -35px;
+    margin-top: -35px;
+    transform: rotate(var(--rotation)) translateY(-120px) rotate(calc(-1 * var(--rotation)));
+  }
+
+  .valuePetal {
+    font-size: 11px;
+  }
+
+  .valuesGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .valueCard {
+    padding: 16px;
+  }
+
+  .valueCard h4 {
+    font-size: 13px;
+  }
+
+  .valueCard p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    max-width: 300px;
+  }
+
+  .valuesGrid {
+    grid-template-columns: 1fr;
+  }
+}
